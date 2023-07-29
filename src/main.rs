@@ -1,7 +1,9 @@
 mod entities;
 mod repositories;
 use entities::user::UserVec;
-use repositories::user_repository::read_csv;
+use entities::city::CityVec;
+use repositories::user_repository;
+use repositories::city_repository;
 
 use actix_web::{
     get, http::header::ContentType, post, web, App, HttpResponse, HttpServer, Responder,
@@ -13,9 +15,20 @@ fn main() {
     #[get("/users")]
     async fn get_users() -> impl Responder {
         let users: UserVec =
-            read_csv("/home/furetto/Scrivania/progetti/applications/rest_api/raw/user.csv")
+            user_repository::get_users("/home/furetto/Scrivania/progetti/applications/rest_api/raw/user.csv")
                 .unwrap();
         let json = serde_json::to_string(&users).unwrap();
+        HttpResponse::Ok()
+            .content_type(ContentType::json())
+            .body(json)
+    }
+
+    #[get("/cities")]
+    async fn get_cities() -> impl Responder {
+        let cities: CityVec =
+            city_repository::get_cities("/home/furetto/Scrivania/progetti/applications/rest_api/raw/city.csv")
+                .unwrap();
+        let json = serde_json::to_string(&cities).unwrap();
         HttpResponse::Ok()
             .content_type(ContentType::json())
             .body(json)
@@ -42,6 +55,7 @@ fn main() {
                 .service(hello)
                 .service(echo)
                 .service(get_users)
+                .service(get_cities)
                 .route("/hey", web::get().to(manual_hello))
         })
         .bind(("127.0.0.1", 8080))?
