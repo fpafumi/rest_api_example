@@ -1,6 +1,6 @@
-use crate::entities::city;
+use crate::entities::city_entity;
 use csv::Reader;
-use city::{City, CityVec};
+use city_entity::{City, CityVec};
 
 pub fn get_cities(filename: &str) -> Result<CityVec, csv::Error> {
     let mut reader = Reader::from_path(filename).unwrap();

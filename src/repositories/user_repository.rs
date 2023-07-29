@@ -1,6 +1,6 @@
-use crate::entities::user;
+use crate::entities::user_entity;
 use csv::Reader;
-use user::{User, UserVec};
+use user_entity::{User, UserVec};
 
 pub fn get_users(filename: &str) -> Result<UserVec, csv::Error> {
     let mut reader = Reader::from_path(filename).unwrap();

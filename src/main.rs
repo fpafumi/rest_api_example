@@ -1,68 +1,28 @@
 mod entities;
 mod repositories;
-use entities::user::UserVec;
-use entities::city::CityVec;
-use repositories::user_repository;
-use repositories::city_repository;
+mod controllers;
+mod services;
 
-use actix_web::{
-    get, http::header::ContentType, post, web, App, HttpResponse, HttpServer, Responder,
-};
+use controllers::{users_controller, cities_controller};
+use actix_web::{App, HttpServer};
 
 fn main() {
-    println!("------------------- INIT ----------------");
-
-    #[get("/users")]
-    async fn get_users() -> impl Responder {
-        let users: UserVec =
-            user_repository::get_users("/home/furetto/Scrivania/progetti/applications/rest_api/raw/user.csv")
-                .unwrap();
-        let json = serde_json::to_string(&users).unwrap();
-        HttpResponse::Ok()
-            .content_type(ContentType::json())
-            .body(json)
-    }
-
-    #[get("/cities")]
-    async fn get_cities() -> impl Responder {
-        let cities: CityVec =
-            city_repository::get_cities("/home/furetto/Scrivania/progetti/applications/rest_api/raw/city.csv")
-                .unwrap();
-        let json = serde_json::to_string(&cities).unwrap();
-        HttpResponse::Ok()
-            .content_type(ContentType::json())
-            .body(json)
-    }
-
-    #[get("/")]
-    async fn hello() -> impl Responder {
-        HttpResponse::Ok().body("Ciao tigre!")
-    }
-
-    #[post("/echo")]
-    async fn echo(req_body: String) -> impl Responder {
-        HttpResponse::Ok().body(req_body)
-    }
-
-    async fn manual_hello() -> impl Responder {
-        HttpResponse::Ok().body("Hey there!")
-    }
+    let addrs = "127.0.0.1";
+    let port = 8080;
+    println!("webserver is listening on {}:{}", &addrs, &port);
 
     #[actix_web::main]
-    async fn webserver() -> std::io::Result<()> {
+    async fn webserver(addrs: &str, port: u16) -> std::io::Result<()> {
         HttpServer::new(|| {
             App::new()
-                .service(hello)
-                .service(echo)
-                .service(get_users)
-                .service(get_cities)
-                .route("/hey", web::get().to(manual_hello))
+                .service(users_controller::get_users)
+                .service(cities_controller::get_cities)
         })
-        .bind(("127.0.0.1", 8080))?
+        .bind((addrs, port)).unwrap()
         .run()
         .await
     }
-    match webserver() {
+    match webserver(addrs, port) {
         Ok(..) => {
             println!("Webserver terminated");
         }

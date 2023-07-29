@@ -1,2 +1,2 @@
-pub mod user;
-pub mod city;
+pub mod user_entity;
+pub mod city_entity;
