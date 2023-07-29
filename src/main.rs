@@ -1,7 +1,7 @@
 mod entities;
 mod repositories;
-use entities::user::user::{UserVec};
-use repositories::user_repository::user_repository::{read_csv};
+use entities::user::{UserVec};
+use repositories::user_repository::{read_csv};
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, http::header::ContentType};
 
