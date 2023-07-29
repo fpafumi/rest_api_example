@@ -3,7 +3,7 @@
 use crate::user_repository::user_repository::*;
 use crate::user_module::user_module::*;
 //use serde_json::Result;
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, http::header::ContentType};
 
 
 fn main() {
@@ -13,7 +13,9 @@ fn main() {
     async fn get_users() -> impl Responder {
         let users: UserVec = read_csv("/home/furetto/Scrivania/progetti/applications/rest_api/raw/User.csv").unwrap();
         let json = serde_json::to_string(&users).unwrap();
-        HttpResponse::Ok().body(json)
+        HttpResponse::Ok()
+            .content_type(ContentType::json())
+            .body(json)
     }
 
     #[get("/")]
@@ -43,7 +45,10 @@ fn main() {
         .run()
         .await
     }
-    webserver();
+    match webserver() {
+        Ok(..) => { println!("Webserver terminated"); },
+        Err(..) => { println!("Error during start webserver"); }
+    }
 
 
 }
