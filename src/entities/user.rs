@@ -15,14 +15,12 @@ pub struct User {
 
 impl UserVec {
     pub fn new(user_vec: Vec<User>) -> UserVec {
-        UserVec {
-            data: user_vec,
-        }
+        UserVec { data: user_vec }
     }
 }
 
 impl User {
-    pub fn new(name:String, surname:String, age:String, address:String) -> User {
+    pub fn new(name: String, surname: String, age: String, address: String) -> User {
         User {
             name: name.to_owned(),
             surname: surname.to_owned(),

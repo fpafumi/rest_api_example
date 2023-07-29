@@ -1,17 +1,20 @@
 mod entities;
 mod repositories;
-use entities::user::{UserVec};
-use repositories::user_repository::{read_csv};
+use entities::user::UserVec;
+use repositories::user_repository::read_csv;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, http::header::ContentType};
-
+use actix_web::{
+    get, http::header::ContentType, post, web, App, HttpResponse, HttpServer, Responder,
+};
 
 fn main() {
     println!("------------------- INIT ----------------");
 
     #[get("/users")]
     async fn get_users() -> impl Responder {
-        let users: UserVec = read_csv("/home/furetto/Scrivania/progetti/applications/rest_api/raw/User.csv").unwrap();
+        let users: UserVec =
+            read_csv("/home/furetto/Scrivania/progetti/applications/rest_api/raw/user.csv")
+                .unwrap();
         let json = serde_json::to_string(&users).unwrap();
         HttpResponse::Ok()
             .content_type(ContentType::json())
@@ -46,9 +49,11 @@ fn main() {
         .await
     }
     match webserver() {
-        Ok(..) => { println!("Webserver terminated"); },
-        Err(..) => { println!("Error during start webserver"); }
+        Ok(..) => {
+            println!("Webserver terminated");
+        }
+        Err(..) => {
+            println!("Error during start webserver");
+        }
     }
-
-
 }
