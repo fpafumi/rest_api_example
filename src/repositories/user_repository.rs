@@ -1,7 +1,6 @@
-//#[path = "../entities/user.rs"] mod user_module;
 pub mod user_repository {
-    use crate::user_module;
-    use user_module::user::*;
+    use crate::entities::user;
+    use user::user::{User, UserVec};
     use csv::{Reader};
 
     pub fn read_csv(filename: &str) -> Result<UserVec, csv::Error> {
