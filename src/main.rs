@@ -7,7 +7,13 @@ use controllers::{users_controller, cities_controller};
 use actix_web::{App, HttpServer};
 
 fn main() {
-    let addrs = "127.0.0.1";
+    let args: Vec<String> = std::env::args().collect();
+    let env = args.get(1)
+        .expect("\n\nexample usage:\n1. ./program path/.env\n2. cargo run ./src/.env\nthe first argument must be the .env file\n\n");
+    dotenv::from_path(&env)
+        .expect(&*format!("file .env not exist in this location: {}", &env));
+    println!("file {} successfully read", &env);
+    let addrs = "0.0.0.0";
     let port = 8080;
     println!("webserver is listening on {}:{}", &addrs, &port);
 
