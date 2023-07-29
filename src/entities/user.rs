@@ -1,4 +1,4 @@
-pub mod user_module {
+pub mod user {
     use serde::{Deserialize, Serialize};
 
     #[derive(Serialize, Deserialize, Debug)]

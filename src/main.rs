@@ -1,7 +1,7 @@
 #[path = "repositories/user_repository.rs"] mod user_repository;
 #[path = "entities/user.rs"] mod user_module;
 use crate::user_repository::user_repository::*;
-use crate::user_module::user_module::*;
+use crate::user_module::user::*;
 //use serde_json::Result;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, http::header::ContentType};
 
