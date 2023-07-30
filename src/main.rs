@@ -13,8 +13,10 @@ fn main() {
     dotenv::from_path(&env)
         .expect(&*format!("file .env not exist in this location: {}", &env));
     println!("file {} successfully read", &env);
-    let addrs = "0.0.0.0";
-    let port = 8080;
+    let addrs: String = std::env::var("ADDRS").expect("the ADDRS is not present in .env file");
+    let addrs = &addrs as &str;
+    let port: String = std::env::var("PORT").expect("the PORT is not present in .env file");
+    let port = port.parse::<u16>().unwrap();
     println!("webserver is listening on {}:{}", &addrs, &port);
 
     #[actix_web::main]
