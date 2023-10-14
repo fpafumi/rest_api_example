@@ -1,7 +1,5 @@
-use actix_web::{
-    get, http::header::ContentType, HttpResponse, Responder,
-};
 use crate::services::user_service;
+use actix_web::{get, http::header::ContentType, HttpResponse, Responder};
 
 #[get("/users")]
 async fn get_users() -> impl Responder {
